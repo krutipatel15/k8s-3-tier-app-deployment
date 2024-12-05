@@ -1,0 +1,4 @@
+creation_rules:
+    - gcp_kms: projects/tokyo-ceiling-435523-d0/locations/northamerica-northeast1/keyRings/my-keyring/cryptoKeys/key_one
+      path_regex: '.*\.yaml$'
+      encrypted_regex: '^(data)$'

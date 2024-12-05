@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frontend-deployment
+  namespace: frontend-namespace
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: flask-app
+  template:
+    metadata:
+      name: flask-app
+      labels:
+         name: flask-app
+    spec:
+      containers:
+        - name: flask
+          image: gcr.io/tokyo-ceiling-435523-d0/my-act2-frontend:latest
+          env:
+          - name: PGDB_USER
+            valueFrom:
+              secretKeyRef:
+                name: frontend-secret
+                key: PGDB_USER
+          - name: PGDB_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: frontend-secret
+                key: PGDB_PASSWORD
+          - name: PGDB_HOST
+            valueFrom:
+              configMapKeyRef:
+                name: frontend-configmap
+                key: PGDB_HOST
+          - name: REDIS_HOST
+            valueFrom:
+              configMapKeyRef:
+                name: frontend-configmap
+                key: REDIS_HOST
+          - name: PGDB_NAME
+            valueFrom:
+              configMapKeyRef:
+                name: frontend-configmap
+                key: PGDB_NAME
+          ports:
+            - containerPort: 5000
